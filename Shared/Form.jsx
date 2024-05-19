@@ -7,7 +7,7 @@ import {
 } from "@mui/icons-material";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React from "react";
+import { signIn } from "next-auth/react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 
@@ -38,6 +38,22 @@ const Form = ({ type }) => {
         toast.success("Account created");
       } else {
         toast.error(result.message || "Something went wrong");
+      }
+    }
+
+    if (type === "login") {
+      const res = await signIn("credentials", {
+        ...data,
+        redirect: false,
+      });
+
+      if (res.ok) {
+        router.push("/chat");
+      }
+
+      if (res.error) {
+        console.log(res.error);
+        toast.error(res.error || "Invalid email or password");
       }
     }
   };
