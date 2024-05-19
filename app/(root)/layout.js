@@ -2,6 +2,7 @@ import { Inter } from "next/font/google";
 import "../globals.css";
 import { Toaster } from "react-hot-toast";
 import Provider from "@components/Provider";
+import Navbar from "@components/Navbar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -15,6 +16,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body suppressHydrationWarning={true} className={inter.className}>
         <Provider>
+          <Navbar />
           {children}
           <Toaster />
         </Provider>
