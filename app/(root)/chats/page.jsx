@@ -1,11 +1,17 @@
-"use client";
-
-import { useSession } from "next-auth/react";
+import ChatList from "@components/ChatList";
+import ContactList from "@components/ContactList";
 
 const Chats = () => {
-  const { data: session } = useSession();
-  console.log(session);
-  return <div>CHATS IS MY LIFE</div>;
+  return (
+    <div className="main-container">
+      <div className="w-full md:w-[50%] lg:w-[35%]">
+        <ChatList />
+      </div>
+      <div className="hidden md:block lg:block md:w-[50%] lg:w-[65%]">
+        <ContactList />
+      </div>
+    </div>
+  );
 };
 
 export default Chats;
