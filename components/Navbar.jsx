@@ -7,7 +7,7 @@ import { usePathname } from "next/navigation";
 
 const Navbar = () => {
   const { data: session } = useSession();
-  console.log(session);
+  console.log("NAVBAR - ", session);
   const pathName = usePathname();
 
   const handleLogout = async () => {
