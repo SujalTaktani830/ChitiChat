@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import Loader from "./Loader";
 import { CheckCircle, RadioButtonUnchecked } from "@mui/icons-material";
 import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 const ContactList = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -74,53 +75,42 @@ const ContactList = () => {
     }
   };
 
+  const router = useRouter();
+
   // CREATE CHAT ROOM VIA API CALL
-  // const createChat = async () => {
-  //   try {
-  //     const res = await fetch("/api/chats", {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify({
-  //         members: selectedContacts.map((contact) => contact._id),
-  //         isGroup,
-  //         groupName,
-  //         groupPhoto: "",
-  //       }),
-  //     });
-
-  //     if (!res.ok) {
-  //       const errorData = await res.json();
-  //       toast.error(errorData.message || "Failed to create chat");
-  //     }
-
-  //     const data = await res.json();
-
-  //     if (res.error) {
-  //       toast.error(error.message || "Something went wrong");
-  //     }
-
-  //     toast.success("Chat created successfully");
-
-  //     // PUSH THE CHAT TO THE USER MODEL "CHAT" ARRAY -
-  //     await Promise.all(
-  //       selectedContacts.map(async (contact) => {
-  //         await User.findByIdAndUpdate(contact._id, {
-  //           $addToSet: { chats: data._id },
-  //         });
-  //       })
-  //     );
-
-  //     router.push("/chats");
-  //   } catch (err) {
-  //     toast.error("Something went wrong");
-  //     console.log("Error occured - ", err);
-  //   }
-  // };
-
   const createChat = async () => {
-    toast.success("Chat is about to get created ✅");
+    try {
+      // console.log(currentUser.id, selectedContacts, isGroup, groupName);
+      // console.log("CURRENT USER ", currentUser);
+      const res = await fetch("/api/chats", {
+        method: "POST",
+        body: JSON.stringify({
+          currentUserID: currentUser.id,
+          members: selectedContacts.map((contact) => contact._id),
+          isGroup,
+          groupName,
+        }),
+      });
+
+      const chat = await res.json();
+      console.log(res.ok);
+      console.log(chat);
+
+      if (res.ok) {
+        // Check if the chat already exists and display the custom message
+        if (chat.message === "Chat already exists") {
+          toast.error(chat.message);
+        } else {
+          router.push(`/chats/${chat._id}`);
+          toast.success("Chat created successfully");
+        }
+      } else {
+        toast.error(chat.message || "Something went wrong");
+      }
+    } catch (err) {
+      console.log(err);
+      toast.error("Something went wrong");
+    }
   };
 
   // ADD GROUP CHAT DETAILS -
@@ -169,6 +159,7 @@ const ContactList = () => {
                 <div className="flex flex-col gap-3">
                   <p className="text-body-bold">Group Chat Name</p>
                   <input
+                    required
                     type="text"
                     placeholder="Group Name"
                     className="input-group-name"
