@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import Loader from "./Loader";
 import ChatBox from "./ChatBox";
 
-const ChatList = () => {
+const ChatList = ({ currentChatID }) => {
   const { data: session } = useSession();
   const currentUser = session?.user;
 
@@ -17,7 +17,7 @@ const ChatList = () => {
       const res = await fetch(`/api/users/${currentUser.id}`);
       const data = await res.json();
       setChats(data);
-      console.log("CHATS - ", chats);
+      // console.log("CHATS - ", chats);
       setIsLoading(false);
     } catch (e) {
       console.log(e);
@@ -36,7 +36,11 @@ const ChatList = () => {
 
       <div className="chats">
         {chats.map((chat) => (
-          <ChatBox chat={chat} currentUser={currentUser} />
+          <ChatBox
+            chat={chat}
+            currentUser={currentUser}
+            currentChatID={currentChatID}
+          />
         ))}
       </div>
     </div>

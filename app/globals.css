@@ -144,7 +144,7 @@
 
 /* ChatDetails */
 .chat-details {
-  @apply h-screen flex flex-col bg-white rounded-2xl;
+  @apply h-[89vh] flex flex-col bg-white rounded-2xl;
 }
 
 /* Chat Header */
@@ -186,8 +186,12 @@
   @apply w-full flex items-center justify-between px-7 py-3 rounded-3xl cursor-pointer bg-white;
 }
 
+.message-input-field {
+  @apply w-[90%] outline-none;
+}
+
 .prepare-message {
-  @apply flex items-center gap-4;
+  @apply w-[100%] flex items-center gap-4;
 }
 
 .send-icon {
