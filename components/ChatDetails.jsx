@@ -7,6 +7,7 @@ import { toast } from "react-hot-toast";
 import { AddPhotoAlternate, Send } from "@mui/icons-material";
 import Link from "next/link";
 import { CldUploadButton } from "next-cloudinary";
+import MessageBox from "./MessageBox";
 
 const ChatDetails = ({ chatID }) => {
   const [loading, setLoading] = useState(true);
@@ -144,7 +145,15 @@ const ChatDetails = ({ chatID }) => {
       </div>
 
       {/* CHAT BODY */}
-      <div className="chat-body"></div>
+      <div className="chat-body">
+        {chat?.messages?.map((message) => (
+          <MessageBox
+            message={message}
+            key={message._id}
+            currentUser={currentUser}
+          />
+        ))}
+      </div>
 
       {/* SEND MESSAGE INPUT TILE */}
       <div className="send-message">
