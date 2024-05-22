@@ -1,4 +1,5 @@
 import { connectToDB } from "@db/connect";
+import { pusherServer } from "@lib/pusher";
 import Chat from "@models/ChatModel";
 import Message from "@models/MessageModel";
 import User from "@models/UserModel";
@@ -11,18 +12,20 @@ export const POST = async (req) => {
 
     const { chatID, currentUserID, text, photo } = body;
 
-    //   console.log(body);
+    const currentUser = await User.findById(currentUserID);
+
+    // console.log(body);
     // console.log(chatID, currentUserID, text, photo);
 
     const newMessage = await Message.create({
       chat: chatID,
-      sender: currentUserID,
+      sender: currentUser,
       text,
       photos: photo,
       seenBy: [currentUserID],
     });
 
-    console.log(newMessage);
+    // console.log(newMessage);
 
     const updatedChat = await Chat.findByIdAndUpdate(
       chatID,
@@ -40,21 +43,23 @@ export const POST = async (req) => {
         populate: [
           {
             path: "sender",
-            model: User,
+            model: "User",
           },
           {
             path: "seenBy",
-            model: User,
+            model: "User",
           },
         ],
       })
       .populate({
         path: "members",
-        model: User,
+        model: "User",
       })
       .exec();
 
-    console.log(updatedChat);
+    // console.log(updatedChat);
+
+    await pusherServer.trigger(chatID, "new-message", newMessage);
 
     return new Response(JSON.stringify(newMessage), { status: 200 });
   } catch (error) {

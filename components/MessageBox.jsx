@@ -1,7 +1,7 @@
 import { format } from "date-fns";
 
 const MessageBox = ({ message, currentUser }) => {
-  // console.log("MESSAGE -", message);
+  console.log("MESSAGE -", message);
   // console.log("currentUser -", currentUser);
 
   return message?.sender?._id !== currentUser.id ? (
@@ -15,7 +15,7 @@ const MessageBox = ({ message, currentUser }) => {
       <div className="message-info">
         <p className="text-small-bold">
           {message?.sender?.username} &#160; &#183; &#160;
-          {new Date(message?.createdAt).toLocaleString()}
+          {/* {new Date(message?.createdAt).toLocaleString()} */}
           {format(new Date(message?.createdAt), "p")}
         </p>
 

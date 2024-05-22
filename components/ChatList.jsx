@@ -45,6 +45,7 @@ const ChatList = ({ currentChatID }) => {
       <div className="chats">
         {chats.map((chat) => (
           <ChatBox
+            key={chat._id}
             chat={chat}
             currentUser={currentUser}
             currentChatID={currentChatID}

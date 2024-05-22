@@ -94,9 +94,7 @@ import { format } from "date-fns";
 import { useRouter } from "next/navigation";
 
 const ChatBox = ({ chat, currentUser, currentChatID }) => {
-  console.log(chat?.messages[0]);
   console.log(chat?.messages);
-
 
   const router = useRouter();
 
@@ -109,6 +107,7 @@ const ChatBox = ({ chat, currentUser, currentChatID }) => {
   const lastMessage =
     chat.messages.length > 0 ? chat.messages[chat.messages.length - 1] : null;
 
+  console.log(lastMessage?.text);
   // const seen = lastMessage?.seenBy.find(
   //   (member) => member._id === currentUser.id
   // );

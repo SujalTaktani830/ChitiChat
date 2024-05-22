@@ -1,13 +1,14 @@
 "use client";
 
 import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Loader from "./Loader";
 import { toast } from "react-hot-toast";
 import { AddPhotoAlternate, Send } from "@mui/icons-material";
 import Link from "next/link";
 import { CldUploadButton } from "next-cloudinary";
 import MessageBox from "./MessageBox";
+import { pusherClient } from "@lib/pusher";
 
 const ChatDetails = ({ chatID }) => {
   const [loading, setLoading] = useState(true);
@@ -103,6 +104,35 @@ const ChatDetails = ({ chatID }) => {
     if (currentUser && chatID) getChatDetails();
   }, [currentUser, chatID]);
 
+  useEffect(() => {
+    pusherClient.subscribe(chatID);
+
+    const handleMessage = async (newMessage) => {
+      setChat((prevChat) => {
+        return {
+          ...prevChat,
+          messages: [...prevChat.messages, newMessage],
+        };
+      });
+    };
+
+    pusherClient.bind("new-message", handleMessage);
+
+    return () => {
+      pusherClient.unsubscribe(chatID);
+      pusherClient.unbind("new-message", handleMessage);
+    };
+  }, [chatID]);
+
+  // HANDLE THE SCROLLING EFFECT TO GO DIRECTLY TO THE BOTTOM OF THE CHAT -
+  const bottomRef = useRef();
+
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({
+      behavior: "smooth",
+    });
+  }, [chat?.messages]);
+
   return loading ? (
     <Loader />
   ) : (
@@ -153,6 +183,8 @@ const ChatDetails = ({ chatID }) => {
             currentUser={currentUser}
           />
         ))}
+
+        <div ref={bottomRef} />
       </div>
 
       {/* SEND MESSAGE INPUT TILE */}
