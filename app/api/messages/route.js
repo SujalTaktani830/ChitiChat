@@ -1,6 +1,7 @@
 import { connectToDB } from "@db/connect";
 import Chat from "@models/ChatModel";
 import Message from "@models/MessageModel";
+import User from "@models/UserModel";
 
 export const POST = async (req) => {
   try {
@@ -10,15 +11,15 @@ export const POST = async (req) => {
 
     const { chatID, currentUserID, text, photo } = body;
 
-  //   console.log(body);
-  // console.log(chatID, currentUserID, text, photo);
+    //   console.log(body);
+    // console.log(chatID, currentUserID, text, photo);
 
     const newMessage = await Message.create({
       chat: chatID,
       sender: currentUserID,
       text,
-      photos : photo,
-      seenBy: currentUserID,
+      photos: photo,
+      seenBy: [currentUserID],
     });
 
     console.log(newMessage);
@@ -36,16 +37,24 @@ export const POST = async (req) => {
       .populate({
         path: "messages",
         model: Message,
-        populate: {
-          path: "sender seenBy",
-          model: "User",
-        },
+        populate: [
+          {
+            path: "sender",
+            model: User,
+          },
+          {
+            path: "seenBy",
+            model: User,
+          },
+        ],
       })
       .populate({
         path: "members",
-        model: "User",
+        model: User,
       })
       .exec();
+
+    console.log(updatedChat);
 
     return new Response(JSON.stringify(newMessage), { status: 200 });
   } catch (error) {

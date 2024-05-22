@@ -15,12 +15,20 @@ const ChatList = ({ currentChatID }) => {
   const getChats = async () => {
     try {
       const res = await fetch(`/api/users/${currentUser.id}`);
+
+      if (res.error) {
+        console.log(error.message || "Failed to fetch the chats");
+      }
+
       const data = await res.json();
+
       setChats(data);
-      // console.log("CHATS - ", chats);
+      console.log("CHATS - ", data);
+
       setIsLoading(false);
     } catch (e) {
       console.log(e);
+      setIsLoading(false);
     }
   };
 
