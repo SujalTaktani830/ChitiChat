@@ -34,7 +34,7 @@ const Form = ({ type }) => {
       const result = await res.json();
 
       if (res.ok) {
-        router.push("/chats");
+        router.push("/login");
         toast.success("Account created");
       } else {
         toast.error(result.message || "Something went wrong");

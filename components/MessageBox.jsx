@@ -1,10 +1,10 @@
 import { format } from "date-fns";
 
 const MessageBox = ({ message, currentUser }) => {
-  console.log("MESSAGE -", message);
+  // console.log("MESSAGE -", message);
   // console.log("currentUser -", currentUser);
 
-  return message?.sender?._id !== currentUser.id ? (
+  return message?.sender?._id !== currentUser?.id ? (
     <div className="message-box">
       {/* HANDLE THE HEADER */}
       <img

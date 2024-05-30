@@ -10,6 +10,8 @@ import { useForm } from "react-hook-form";
 const ProfilePage = () => {
   const { data: session } = useSession();
 
+  // console.log(session);
+
   const {
     register,
     handleSubmit,
