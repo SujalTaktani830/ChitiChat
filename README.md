@@ -1,36 +1,33 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# ChitiChat - Stay in touch!
 
-## Getting Started
+## Overview
+This web application provides a comprehensive group chat platform supporting both single and multi-user interactions. It facilitates seamless sharing of various media types, including files, images, and text messages. Real-time push notifications ensure users stay updated with the latest messages. The backend API, developed using Next.js API routes, offers robust functionality and is secured using NextAuth for authentication and authorization.
 
-First, run the development server:
+## Screenshots
+![image](https://github.com/NilanchalaPanda/ChitiChat/assets/110488337/13cca3ad-8454-4cef-a9dc-7d315d6d6263)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+![image](https://github.com/NilanchalaPanda/ChitiChat/assets/110488337/e14b9a26-a53c-400d-8e73-29d20aa6de85)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+![image](https://github.com/NilanchalaPanda/ChitiChat/assets/110488337/b6b0ded7-eeab-49c5-b771-8d49b548aece)
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
 
-## Learn More
+## Key Features
+- **Group Chat:** Supports single and multi-user group chats.
+- **Media Sharing:** Allows sharing of files, images, and text messages.
+- **Real-time Notifications:** Push notifications ensure instant updates.
+- **Backend API:** Built with Next.js API routes for robust backend functionality.
+- **Security:** Secured with NextAuth for authentication and authorization.
 
-To learn more about Next.js, take a look at the following resources:
+## Technologies Used
+- **Frontend:** HTML, CSS, JavaScript (React)
+- **Backend:** Next.js API routes
+- **Authentication:** NextAuth for secure user authentication
+- **Real-time Communication:** WebSocket (for real-time chat updates)
+- **Database:** (Specify your choice of database)
+- **Deployment:** (Specify deployment platform, e.g., Vercel, AWS, etc.)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## Future Enhancements
+- Implement end-to-end encryption for enhanced security.
+- Integrate additional media types (e.g., videos, voice messages).
+- Enhance scalability and performance of the backend API.
