@@ -8,32 +8,26 @@ export const POST = async (req) => {
   try {
     await connectToDB();
 
-    const body = await req.json();
-
-    const { chatID, currentUserID, text, photo } = body;
+    const { chatID, currentUserID, text, photo } = await req.json();
 
     const currentUser = await User.findById(currentUserID);
-
-    // console.log(body);
-    // console.log(chatID, currentUserID, text, photo);
+    if (!currentUser) {
+      return new Response(JSON.stringify({ message: "User not found" }), { status: 404 });
+    }
 
     const newMessage = await Message.create({
       chat: chatID,
-      sender: currentUser,
+      sender: currentUser._id,
       text,
       photos: photo,
       seenBy: [currentUserID],
     });
 
-    // console.log(newMessage);
-
     const updatedChat = await Chat.findByIdAndUpdate(
       chatID,
       {
         $push: { messages: newMessage._id },
-        $set: {
-          lastMessage: newMessage.createdAt,
-        },
+        $set: { lastMessage: newMessage.createdAt },
       },
       { new: true }
     )
@@ -41,14 +35,8 @@ export const POST = async (req) => {
         path: "messages",
         model: Message,
         populate: [
-          {
-            path: "sender",
-            model: "User",
-          },
-          {
-            path: "seenBy",
-            model: "User",
-          },
+          { path: "sender", model: "User" },
+          { path: "seenBy", model: "User" },
         ],
       })
       .populate({
@@ -57,13 +45,14 @@ export const POST = async (req) => {
       })
       .exec();
 
-    // console.log(updatedChat);
-
     await pusherServer.trigger(chatID, "new-message", newMessage);
 
     return new Response(JSON.stringify(newMessage), { status: 200 });
   } catch (error) {
-    console.log(error);
-    return new Response("Failed to create new message", { status: 500 });
+    console.error("Error creating message:", error);
+    return new Response(
+      JSON.stringify({ message: "Failed to create new message" }),
+      { status: 500, headers: { "Content-Type": "application/json" } }
+    );
   }
 };
